@@ -20,7 +20,8 @@ class CI extends PluginBase implements Listener
     public $blockpets;
 	public $pipol;
     private $typeCache = [];
-	private $mobs = array(
+    /**
+    private $mobs = array(
     'bat',
     'blaze',
     'cavespider',
@@ -57,6 +58,7 @@ class CI extends PluginBase implements Listener
     'enderdragon'
 
     );
+    */
 
     public function onEnable()
     {
@@ -80,30 +82,118 @@ class CI extends PluginBase implements Listener
         $this->getServer()->dispatchCommand(new ConsoleCommandSender(), $c);
     }
 
+    public function sendNormalMenu(Player $player)
+    {
+        $form = $this->formapi->createSimpleForm(function (Player $player, array $data) {
+            if (isset($data[0])){
+                #$type = $this->mobs[ $data[0] ];
+		switch ($data[0])
+		{
+			case 0:
+				$this->storeTypeCache($player, "wolf");
+                        	$this->ui->mainForm($player, "wolf", $this->getPrice("wolf"));
+			break;
+				
+			case 1:
+				$this->storeTypeCache($player, "cat");
+                        	$this->ui->mainForm($player, "cat", $this->getPrice("cat"));
+			break;
+			
+			case 2:
+				$this->storeTypeCache($player, "pig");
+                        	$this->ui->mainForm($player, "pig", $this->getPrice("pig"));
+			break;
+				
+			case 3:
+				$this->storeTypeCache($player, "rabbit");
+                        	$this->ui->mainForm($player, "rabbit", $this->getPrice("rabbit"));
+			break;
+				
+		}
+               	return true;
+            }
+        });
+        $form->setTitle('§l§fPet Store');
+	    
+	$form->addButton('§l§0Dog : §c$' . $this->getPrice("wolf")); //data[0]
+	$form->addButton('§l§0Cat : §c$' . $this->getPrice("cat")); //data[1]
+	$form->addButton('§l§0Pig : §c$' . $this->getPrice("pig")); //data[2]
+	$form->addButton('§l§0Bunny : §c$' . $this->getPrice("rabbit")); //data[2]
+	    
+        #$this->removeType($player);
+        $form->sendToPlayer($player);
+    }
+	
+    public function sendVIPMenu(Player $player)
+    {
+        $form = $this->formapi->createSimpleForm(function (Player $player, array $data) {
+            if (isset($data[0])){
+		switch ($data[0])
+		{
+			case 0:
+				$this->storeTypeCache($player, "vex");
+                        	$this->ui->mainForm($player, "vex", $this->getPrice("vex"));
+			break;
+				
+			case 1:
+				$this->storeTypeCache($player, "ghast");
+                        	$this->ui->mainForm($player, "ghast", $this->getPrice("ghast"));
+			break;
+			
+			case 2:
+				$this->storeTypeCache($player, "wither");
+                        	$this->ui->mainForm($player, "wither", $this->getPrice("wither"));
+			break;
+				
+			case 3:
+				$this->storeTypeCache($player, "enderdragon");
+                        	$this->ui->mainForm($player, "enderdragon", $this->getPrice("enderdragon"));
+			break;
+				
+		}
+               	return true;
+            }
+        });
+        $form->setTitle('§l§fPet Store');
+	    
+	$form->addButton('§l§0Vex : §c$' . $this->getPrice("vex")); //data[0]
+	$form->addButton('§l§0Ghast : §c$' . $this->getPrice("ghast")); //data[1]
+	#$form->addButton('§l§0Wither : §c$' . $this->getPrice("wither")); //data[2]
+	#$form->addButton('§l§0Dragon : §c$' . $this->getPrice("enderdragon")); //data[2]
+
+        $form->sendToPlayer($player);
+    }
+	
     public function sendMainMenu(Player $player)
     {
         $form = $this->formapi->createSimpleForm(function (Player $player, array $data) {
             if (isset($data[0])){
-                $type = $this->mobs[ $data[0] ];
-                if (is_string($type))
-                {
-                    $this->storeTypeCache($player, strtolower($type));
-                    $this->ui->mainForm($player, $type, $this->getPrice($type));
-                } else {
-                    $player->sendMessage("§4§lAn ERROR has OCCURED, please report to an Admin ASAP");
-                }
-                
-				return true;
+                switch ($data[0])
+		{
+			case 1:
+                        	$player->sendMessage("Feature is in progress");//$this->sendExoMenu($player);
+			break;
+			case 2:
+				if($player->hasPermission("shs.vip.pet"))
+				{
+					$this->sendVIPMenu($player);
+				} else {
+					$player->sendMessage("§cPlease visit the store and purchase VIP");
+			break;
+			default:
+				$this->sendNormalMenu($player);			
+		}
+		return true;
             }
         });
-        $form->setTitle('§l§dKawaii §fPet Store');
-
-        foreach ($this->mobs as $x) {
-            $form->addButton('§l§0'. strtoupper($x) .' : §c$' . $this->getPrice($x)); //data[0]
-        }
-
-        $this->removeType($player);
+        $form->setTitle('§l§fPet Store');
+	    
+        $form->addButton('§l§0Normal PetStore'); //data[0]
+	$form->addButton('§l§0Exotic PetStore'); //data[1]
+	$form->addButton('§l§cV§fIP §0PetStore'); //data[2]
+	
         $form->sendToPlayer($player);
+		
     }
 
     public function onCommand(CommandSender $sender, Command $cmd, String $label, array $args): bool
@@ -114,7 +204,7 @@ class CI extends PluginBase implements Listener
 	  	}
 
 	  	switch(strtolower($cmd->getName())){
-            case "buypetui":
+            case "buypet":
                 $petcount = count($this->blockpets->getPetsFrom($sender));
                 //if( $petcount >= $this->settings->get('maxpets'))
                 //{
@@ -122,7 +212,8 @@ class CI extends PluginBase implements Listener
                 //    return true;
                 //}//two way check if the player has reached the max owned pet
 
-				$this->sendMainMenu($sender);
+		$this->sendMainMenu($sender);
+		$this->removeType($player);
             break;
       }
         return true;
@@ -175,7 +266,7 @@ class CI extends PluginBase implements Listener
             if($pmoney < $petprice) //checks if player can buy
             {
                 $need = (int) $petprice - $pmoney;
-                    $player->addTitle("§l§dKawaii§f Pets", "§f§lYou need §c$" . $need);
+                    $player->addTitle("§l§fTransact§c Failed", "§f§lYou need §c$" . $need);
                         $this->removeType($player);
                             return true;
             }
@@ -191,8 +282,8 @@ class CI extends PluginBase implements Listener
 
             $target = '"'. $target . '"';
             $this->runCMD("spawnpet " .$type. " " .$petname. " " .$size. " " .$baby." ".$target);
-            $human->addTitle("§l§fPet Gift", "§f§l".$player->getName()." bought a(n) $type for you");
-            $player->addTitle("§l§dKawaii§f Pets", "§f§lYou bought a(n) $type for§b $target");
+            $human->addTitle("§l§fPet Delivery", "§f§l".$player->getName()." bought a(n) $type for you");
+            $player->addTitle("§l§bSuccess!", "§f§lYou bought a(n) $type for§b $target");
             $eco->reducemoney($player->getName(), $petprice);
             $this->removeType($player);
 
@@ -217,7 +308,7 @@ class CI extends PluginBase implements Listener
 
             $plname = '"'. $player->getName() . '"';
             $this->runCMD("spawnpet " .$type. " " .$petname. " " .$size. " " .$baby." ".$plname);
-            $player->addTitle("§l§dKawaii§f Pets", "§f§lYou bought a(n) $type named§b $petname");
+            $player->addTitle("§l§bSuccess!", "§f§lYou bought a(n) $type named§b $petname");
             $eco->reducemoney($player->getName(), $petprice);
             $this->removeType($player);
 
