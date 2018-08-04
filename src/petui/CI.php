@@ -21,7 +21,7 @@ class CI extends PluginBase implements Listener
 	public $pipol;
     private $typeCache = [];
     /**
-    private $mobs = array(
+    PETS
     'bat',
     'blaze',
     'cavespider',
@@ -56,37 +56,40 @@ class CI extends PluginBase implements Listener
     'elderguardian',
     'wither',
     'enderdragon'
-
-    );
     */
-
-    public function onEnable()
-    {
-
-        $this->formapi = $this->getServer()->getPluginManager()->getPlugin('FormAPI');
-        $this->blockpets = $this->getServer()->getPluginManager()->getPlugin('BlockPets');
-        
-        $this->ui = new petUI($this);
-
-        $this->getLogger()->info("Pets are leashed..");
-
-        $this->saveResource('main.yml');
-        $this->settings = new Config($this->getDataFolder() . "main.yml", CONFIG::YAML);
-
-        $this->saveResource('petcount.yml');
-        $this->pcount = new Config($this->getDataFolder() . "petcount.yml", CONFIG::YAML);
-    }
+	private $vipPets = array('blaze', 'ghast', 'vex', 'wither', 'enderdragon');
+	private $pubPets = array('bunny', 'chicken', 'wolf', 'ocelot', 'pig', 'cow');
 	
-    public function runCMD(string $c) : void
-    {
-        $this->getServer()->dispatchCommand(new ConsoleCommandSender(), $c);
-    }
+   	public function onEnable()
+    	{
+
+		$this->formapi = $this->getServer()->getPluginManager()->getPlugin('FormAPI');
+		$this->blockpets = $this->getServer()->getPluginManager()->getPlugin('BlockPets');
+
+		$this->ui = new petUI($this);
+
+		$this->getLogger()->info("Pets are leashed..");
+
+		$this->saveResource('main.yml');
+		$this->settings = new Config($this->getDataFolder() . "main.yml", CONFIG::YAML);
+
+		$this->saveResource('petcount.yml');
+		$this->pcount = new Config($this->getDataFolder() . "petcount.yml", CONFIG::YAML);
+    	}
+	
+    	public function runCMD(string $c) : void
+    	{
+        	$this->getServer()->dispatchCommand(new ConsoleCommandSender(), $c);
+    	}
 
     public function sendNormalMenu(Player $player)
     {
         $form = $this->formapi->createSimpleForm(function (Player $player, array $data) {
             if (isset($data[0])){
-                #$type = $this->mobs[ $data[0] ];
+                $type = $this->pubPets[ $data[0] ];
+		$this->storeTypeCache($player, $type);
+                $this->ui->normalForm($player, $type);
+		/**  
 		switch ($data[0])
 		{
 			case 0:
@@ -114,58 +117,42 @@ class CI extends PluginBase implements Listener
                         	$this->ui->normalForm($player, "cavespider");
 			break
 				
-		}
+		}**/
                	return true;
             }
         });
         $form->setTitle('§l§fPet Store');
-	    
-	$form->addButton('§l§0Dog : §c$' . $this->getPrice("wolf")); //data[0]
+	foreach($this->pubPets as $pet)
+	{
+		$form->addButton('§l§0'.strtoupper($pet). ' : §c' . $this->getPrice($pet)); //data[0]
+	}
+	/**$form->addButton('§l§0Dog : §c$' . $this->getPrice("wolf")); //data[0]
 	$form->addButton('§l§0Cat : §c$' . $this->getPrice("ocelot")); //data[1]
 	$form->addButton('§l§0Pig : §c$' . $this->getPrice("pig")); //data[2]
 	$form->addButton('§l§0Bunny : §c$' . $this->getPrice("rabbit")); //data[3]
 	$form->addButton('§l§0Cave Spider : §c$' . $this->getPrice("cavespider")); //data[4]
-
+	*/
         $form->sendToPlayer($player);
     }
 	
     public function sendVIPMenu(Player $player)
     {
         $form = $this->formapi->createSimpleForm(function (Player $player, array $data) {
-            if (isset($data[0])){
-		switch ($data[0])
-		{
-			case 0:
-				$this->storeTypeCache($player, "vex");
-                        	$this->ui->customForm($player, "vex");
-			break;
-				
-			case 1:
-				$this->storeTypeCache($player, "ghast");
-                        	$this->ui->customForm($player, "ghast");
-			break;
-			
-			case 2:
-				$this->storeTypeCache($player, "wither");
-                        	$this->ui->customForm($player, "wither");
-			break;
-				
-			case 3:
-				$this->storeTypeCache($player, "enderdragon");
-                        	$this->ui->customForm($player, "enderdragon");
-			break;
-				
-		}
-               	return true;
-            }
+		
+        	if (isset($data[0]))
+	    	{
+			$type = $this->vipPets[ $data[0] ];
+			$this->storeTypeCache($player, $type);
+			$this->ui->normalForm($player, $type);
+			return true;
+            	}
         });
-        $form->setTitle('§l§fPet Store');
 	    
-	$form->addButton('§l§0Vex : §c$' . $this->getPrice("vex")); //data[0]
-	$form->addButton('§l§0Ghast : §c$' . $this->getPrice("ghast")); //data[1]
-	$form->addButton('§l§0Wither : §c$' . $this->getPrice("wither")); //data[2]
-	$form->addButton('§l§0Dragon : §c$' . $this->getPrice("enderdragon")); //data[2]
-
+        $form->setTitle('§l§fPet Store');
+	foreach($this->vipPets as $pet)
+	{
+		$form->addButton('§l§0'.strtoupper($pet). ' : §c' . $this->getPrice($pet));
+	}
         $form->sendToPlayer($player);
     }
 	
