@@ -1,0 +1,35 @@
+price:
+
+  others:
+    baby: 1000
+
+  pets:
+    bat: 1100
+    blaze: 50000
+    cavespider: 5300
+    chicken: 1325
+    cow: 1595
+    creeper: 7000
+    donkey: 16050
+    enderman: 50000
+    endermite: 3500
+    evoker: 7650
+    ghast: 52000
+    horse: 6015
+    husk: 6500
+    irongolem: 6500
+    llma: 15999
+    mooshroom: 15999
+    ocelot: 3000
+    pig: 3500
+    polarbear: 9500
+    rabbit: 1700
+    sheep: 1700
+    skeletonhorse: 35000
+    skeleton: 23100
+    slime: 4500
+    vex: 85900
+    wolf: 1700
+    spider: 3200
+
+#Do not add here, just modify

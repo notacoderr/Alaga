@@ -1,0 +1,9 @@
+name: BlockPetsUI
+main: petui\CI
+version: 1.1
+api: [3.0.0-ALPHA12, 3.0.0-ALPHA13]
+author: CodeBreaker
+
+commands:
+  buypetui:
+    description: "Open pet store, coz RCB disable /spawnpet xD"
