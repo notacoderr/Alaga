@@ -91,22 +91,22 @@ class CI extends PluginBase implements Listener
 		{
 			case 0:
 				$this->storeTypeCache($player, "wolf");
-                        	$this->ui->mainForm($player, "wolf", $this->getPrice("wolf"));
+                        	$this->ui->normalForm($player, "wolf");
 			break;
 				
 			case 1:
-				$this->storeTypeCache($player, "cat");
-                        	$this->ui->mainForm($player, "cat", $this->getPrice("cat"));
+				$this->storeTypeCache($player, "ocelot");
+                        	$this->ui->normalForm($player, "ocelot");
 			break;
 			
 			case 2:
 				$this->storeTypeCache($player, "pig");
-                        	$this->ui->mainForm($player, "pig", $this->getPrice("pig"));
+                        	$this->ui->normalForm($player, "pig");
 			break;
 				
 			case 3:
 				$this->storeTypeCache($player, "rabbit");
-                        	$this->ui->mainForm($player, "rabbit", $this->getPrice("rabbit"));
+                        	$this->ui->normalForm($player, "rabbit");
 			break;
 				
 		}
@@ -119,8 +119,7 @@ class CI extends PluginBase implements Listener
 	$form->addButton('§l§0Cat : §c$' . $this->getPrice("cat")); //data[1]
 	$form->addButton('§l§0Pig : §c$' . $this->getPrice("pig")); //data[2]
 	$form->addButton('§l§0Bunny : §c$' . $this->getPrice("rabbit")); //data[2]
-	    
-        #$this->removeType($player);
+
         $form->sendToPlayer($player);
     }
 	
@@ -132,22 +131,22 @@ class CI extends PluginBase implements Listener
 		{
 			case 0:
 				$this->storeTypeCache($player, "vex");
-                        	$this->ui->mainForm($player, "vex", $this->getPrice("vex"));
+                        	$this->ui->customForm($player, "vex");
 			break;
 				
 			case 1:
 				$this->storeTypeCache($player, "ghast");
-                        	$this->ui->mainForm($player, "ghast", $this->getPrice("ghast"));
+                        	$this->ui->customForm($player, "ghast");
 			break;
 			
 			case 2:
 				$this->storeTypeCache($player, "wither");
-                        	$this->ui->mainForm($player, "wither", $this->getPrice("wither"));
+                        	$this->ui->customForm($player, "wither");
 			break;
 				
 			case 3:
 				$this->storeTypeCache($player, "enderdragon");
-                        	$this->ui->mainForm($player, "enderdragon", $this->getPrice("enderdragon"));
+                        	$this->ui->customForm($player, "enderdragon");
 			break;
 				
 		}
@@ -245,11 +244,11 @@ class CI extends PluginBase implements Listener
        return $this->settings->getNested("price.pets.". $type);
     }
 
-    public function applyPetRequest(Player $player, string $petname, float $size,string $baby,int $price, string $target = null)
+    public function applyPetRequest(Player $player, string $petname, float $size,string $baby, string $target = null)
     {
         $eco = $this->getServer()->getPluginManager()->getPlugin('EconomyAPI');
         $type = $this->getType($player);
-        $petprice = $this->getPrice($type) + $price;
+        $petprice = $this->getPrice($type);
         $pmoney = $eco->mymoney($player->getName());
         //player = Player sender , human = Player target, target = string target, plname = string sender
 
