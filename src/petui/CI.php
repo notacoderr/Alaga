@@ -116,7 +116,7 @@ class CI extends PluginBase implements Listener
         $form->setTitle('§l§fPet Store');
 	    
 	$form->addButton('§l§0Dog : §c$' . $this->getPrice("wolf")); //data[0]
-	$form->addButton('§l§0Cat : §c$' . $this->getPrice("cat")); //data[1]
+	$form->addButton('§l§0Cat : §c$' . $this->getPrice("ocelot")); //data[1]
 	$form->addButton('§l§0Pig : §c$' . $this->getPrice("pig")); //data[2]
 	$form->addButton('§l§0Bunny : §c$' . $this->getPrice("rabbit")); //data[2]
 
