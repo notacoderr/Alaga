@@ -213,7 +213,7 @@ class CI extends PluginBase implements Listener
                 //}//two way check if the player has reached the max owned pet
 
 		$this->sendMainMenu($sender);
-		$this->removeType($player);
+		$this->removeType($sender);
             break;
       }
         return true;
