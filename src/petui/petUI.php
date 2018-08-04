@@ -13,7 +13,7 @@ class petUI
         	$this->main = $pg;
     	}
 
-    	public function customForm(Player $player, $wooosh, $skadoossh)
+    	public function customForm(Player $player, $wooosh)
     	{
 		$form = $this->main->formapi->createCustomForm(function (Player $player, array $data) {
 		    if( isset($data[1]) )
@@ -44,6 +44,7 @@ class petUI
 
 		$form->setTitle('§l§cPet§f Config');
 		//data[0]
+		$skadoossh = $this->main->getPrice($wooosh);
 		$form->addLabel("§fPet type: $wooosh (§a $skadoossh §f)§r\n§cNote: some pets need you to relogin to be turned into baby, and some has no baby form.");
 		//$data[1]
 		$form->addInput("§oPetName §8(max of 8 chars.)");
@@ -54,7 +55,7 @@ class petUI
 		$form->sendToPlayer($player);
     	}
 	
-	public function normalForm(Player $player, $wooosh, $skadoossh)
+	public function normalForm(Player $player, $wooosh)
     	{
 		$form = $this->main->formapi->createCustomForm(function (Player $player, array $data) {
 		    if( isset($data[1]) ) {
@@ -79,6 +80,7 @@ class petUI
         
 		$form->setTitle('§l§cPet§f Config');
 		//data[0]
+		$skadoossh = $this->main->getPrice($wooosh);
 		$form->addLabel("§fPet type: $wooosh (§a $skadoossh §f)");
 		//$data[1]
 		$form->addInput("§oPetName §8(max of 8 chars.)§c*");
