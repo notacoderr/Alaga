@@ -58,7 +58,7 @@ class CI extends PluginBase implements Listener
     'enderdragon'
     */
 	private $vipPets = array('blaze', 'ghast', 'vex', 'wither', 'enderdragon');
-	private $pubPets = array('bunny', 'chicken', 'wolf', 'ocelot', 'pig', 'cow');
+	private $pubPets = array('rabbit', 'chicken', 'wolf', 'ocelot', 'pig', 'cow');
 	
    	public function onEnable()
     	{
