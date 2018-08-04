@@ -67,6 +67,7 @@ class CI extends PluginBase implements Listener
         $this->blockpets = $this->getServer()->getPluginManager()->getPlugin('BlockPets');
         
         $this->ui = new petUI($this);
+	$this->mgt = new mgtUI($this);
 
         $this->getLogger()->info("Pets are leashed..");
 
@@ -169,9 +170,14 @@ class CI extends PluginBase implements Listener
             if (isset($data[0])){
                 switch ($data[0])
 		{
+			case 0:
+				$this->sendNormalMenu($player);
+			break;
+
 			case 1:
                         	$player->sendMessage("Feature is in progress");//$this->sendExoMenu($player);
 			break;
+
 			case 2:
 				if($player->hasPermission("shs.vip.pet"))
 				{
@@ -181,7 +187,7 @@ class CI extends PluginBase implements Listener
 				}
 			break;
 			default:
-				$this->sendNormalMenu($player);			
+				$this->mgt->sendUI($player);			
 		}
 		return true;
             }
@@ -190,7 +196,8 @@ class CI extends PluginBase implements Listener
 	    
         $form->addButton('§l§0Normal PetStore'); //data[0]
 	$form->addButton('§l§0Exotic PetStore'); //data[1]
-	$form->addButton('§l§cV§fIP §0PetStore'); //data[2]
+	$form->addButton('§l§cV§fI§cP §0PetStore'); //data[2]
+	$form->addButton('§l§0Manage Pets'); //data[2]
 	
         $form->sendToPlayer($player);
 		
@@ -204,7 +211,7 @@ class CI extends PluginBase implements Listener
 	  	}
 
 	  	switch(strtolower($cmd->getName())){
-            case "buypet":
+		case "shspet": "shspets":
                 $petcount = count($this->blockpets->getPetsFrom($sender));
                 //if( $petcount >= $this->settings->get('maxpets'))
                 //{
