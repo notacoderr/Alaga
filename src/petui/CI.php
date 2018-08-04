@@ -67,7 +67,6 @@ class CI extends PluginBase implements Listener
         $this->blockpets = $this->getServer()->getPluginManager()->getPlugin('BlockPets');
         
         $this->ui = new petUI($this);
-	$this->mgt = new mgtUI($this);
 
         $this->getLogger()->info("Pets are leashed..");
 
@@ -109,6 +108,11 @@ class CI extends PluginBase implements Listener
 				$this->storeTypeCache($player, "rabbit");
                         	$this->ui->normalForm($player, "rabbit");
 			break;
+			
+			case 4:
+				$this->storeTypeCache($player, "cavespider");
+                        	$this->ui->normalForm($player, "cavespider");
+			break
 				
 		}
                	return true;
@@ -119,7 +123,8 @@ class CI extends PluginBase implements Listener
 	$form->addButton('§l§0Dog : §c$' . $this->getPrice("wolf")); //data[0]
 	$form->addButton('§l§0Cat : §c$' . $this->getPrice("ocelot")); //data[1]
 	$form->addButton('§l§0Pig : §c$' . $this->getPrice("pig")); //data[2]
-	$form->addButton('§l§0Bunny : §c$' . $this->getPrice("rabbit")); //data[2]
+	$form->addButton('§l§0Bunny : §c$' . $this->getPrice("rabbit")); //data[3]
+	$form->addButton('§l§0Cave Spider : §c$' . $this->getPrice("cavespider")); //data[4]
 
         $form->sendToPlayer($player);
     }
@@ -158,8 +163,8 @@ class CI extends PluginBase implements Listener
 	    
 	$form->addButton('§l§0Vex : §c$' . $this->getPrice("vex")); //data[0]
 	$form->addButton('§l§0Ghast : §c$' . $this->getPrice("ghast")); //data[1]
-	#$form->addButton('§l§0Wither : §c$' . $this->getPrice("wither")); //data[2]
-	#$form->addButton('§l§0Dragon : §c$' . $this->getPrice("enderdragon")); //data[2]
+	$form->addButton('§l§0Wither : §c$' . $this->getPrice("wither")); //data[2]
+	$form->addButton('§l§0Dragon : §c$' . $this->getPrice("enderdragon")); //data[2]
 
         $form->sendToPlayer($player);
     }
@@ -174,20 +179,18 @@ class CI extends PluginBase implements Listener
 				$this->sendNormalMenu($player);
 			break;
 
-			case 1:
-                        	$player->sendMessage("Feature is in progress");//$this->sendExoMenu($player);
-			break;
+			#case 1:
+                        	#$player->sendMessage("Feature is in progress");//$this->sendExoMenu($player);
+			#break;
 
-			case 2:
+			case 1:
 				if($player->hasPermission("shs.vip.pet"))
 				{
 					$this->sendVIPMenu($player);
 				} else {
 					$player->sendMessage("§cPlease visit the store and purchase VIP");
 				}
-			break;
-			default:
-				$this->mgt->sendUI($player);			
+			break;		
 		}
 		return true;
             }
@@ -195,9 +198,7 @@ class CI extends PluginBase implements Listener
         $form->setTitle('§l§fPet Store');
 	    
         $form->addButton('§l§0Normal PetStore'); //data[0]
-	$form->addButton('§l§0Exotic PetStore'); //data[1]
-	$form->addButton('§l§cV§fI§cP §0PetStore'); //data[2]
-	$form->addButton('§l§0Manage Pets'); //data[2]
+	$form->addButton('§l§cV§fI§cP §0PetStore'); //data[1]
 	
         $form->sendToPlayer($player);
 		
@@ -211,14 +212,8 @@ class CI extends PluginBase implements Listener
 	  	}
 
 	  	switch(strtolower($cmd->getName())){
-		case "shspet": "shspets":
+		case "buypet":
                 $petcount = count($this->blockpets->getPetsFrom($sender));
-                //if( $petcount >= $this->settings->get('maxpets'))
-                //{
-                //    $sender->addTitle("§l§cError", "§f§lYou already reached pet owned limit");
-                //    return true;
-                //}//two way check if the player has reached the max owned pet
-
 		$this->sendMainMenu($sender);
 		$this->removeType($sender);
             break;
