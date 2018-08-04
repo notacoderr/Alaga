@@ -178,6 +178,7 @@ class CI extends PluginBase implements Listener
 					$this->sendVIPMenu($player);
 				} else {
 					$player->sendMessage("§cPlease visit the store and purchase VIP");
+				}
 			break;
 			default:
 				$this->sendNormalMenu($player);			
